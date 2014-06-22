@@ -17,13 +17,9 @@ class FileController extends Controller{
         $file = new File($this->db);
         $result = $file->getById($this->f3->get('PARAMS.id'));
         $path = '/' . $this->getPath($file);
-        //есть ли файл с таким id
+        //есть ли файл с таким id 
         if(!$result){
             $this->f3->error('404');
-        } else {
-            if(!file_exists($this->f3->get("PREVIEW").md5($result->title).".png")){
-                $this->makePreviewImage($result);
-            }
         }
         $this->f3->set('path', $path);
         $this->f3->set('view', 'file/file.htm');
@@ -33,39 +29,43 @@ class FileController extends Controller{
         $file = new File($this->db);
         //проверка на ошибки при загрузке файла
         if (!($this->f3->get("FILES['file']['error']") == 0)) { 
-            throw new UploadException($this->f3->get("FILES['file']['error']")); 
-        } 
-        //проверить картинка или нет для отображения тэга
-        if(preg_match('/jpeg|jpg|png/',$this->f3->get("FILES['file']['type']"))){
-            $file->set('image', true);
+            $err =  new UploadError($this->f3->get("FILES['file']['error']")); 
+            $errMessage = $err->getMessage();
+            $this->f3->set('err', $errMessage);
+            $this->f3->set('page_head', 'Upload File');
+            $this->f3->set('view', 'file/main.htm');
         } else {
-            $file->set('image', false);
-        }
-        //переименовываем файл до копирования в папку
-        $file->add($this->f3->get("FILES['file']"));
-        $name = $this->rename($file);
-        $this->f3->set("FILES['file']['name']", $name);
-        //без функций, не перезаписывать, не менять на латиницу 
-        \Web::instance()->receive(null, false, false);
-        $this->f3->reroute('/file/'.$file['id']);
+            //переименовываем файл до копирования в папку
+            $file->add($this->f3->get("FILES['file']"));
+            $name = $this->rename($file);
+            $this->f3->set("FILES['file']['name']", $name);
+            //раскидываем файлы по папкам
+            $this->f3->set('UPLOADS', $this->chooseFolder($file));
+            //без функций, не перезаписывать, не менять на латиницу 
+            \Web::instance()->receive(null, false, false);
+            //проверка на картинку
+            if($this->isImage($file)){  
+                if(!file_exists($file->getThumbnailPath($this->f3->get("PREVIEW")))){
+                    $this->makePreviewImage($file);
+                }
+            }
+            $this->f3->reroute('/file/'.$file['id']);
+        } 
     }
 
     public function makePreviewImage($result){
-        if($result->image){
-            $img = new Image($this->f3->get('UPLOADS') . $result->title);
-            $width = $img->width();
-            $height = $img->height();
-            if($width > 200){
-                $width = 200;
-            }
-            if ($height > 200){
-                $height = 200;
-            }
-            $img->resize($width, $height);
-            $file_name = md5($result->title);
-            $preview_path = $this->f3->get('PREVIEW').$file_name.'.png';
-            $this->f3->write($preview_path, $img->dump('png'));
+        $img = new Image($this->getPath($result));
+        $width = $img->width();
+        $height = $img->height();
+        if($width > 200){
+            $width = 200;
         }
+        if ($height > 200){
+            $height = 200;
+        }
+        $img->resize($width, $height);
+        $preview_path = $result->getThumbnailPath($this->f3->get("PREVIEW"));
+        $this->f3->write($preview_path, $img->dump('png'));
     }
 
     public function rename($file){
@@ -76,6 +76,34 @@ class FileController extends Controller{
     }
 
     public function getPath($file){
-        return ($this->f3->get('UPLOADS') . ($file->title));
+        $folderName = $this->getFolderName($file->id);
+        return ($this->f3->get('UPLOAD') . $folderName . ($file->title));
+    }
+
+    public function chooseFolder($file){
+        $folderName = $this->getFolderName($file->id);
+        $folderPath = $this->f3->get('UPLOADS') . $folderName;
+        if(!file_exists($folderPath)){
+           mkdir($folderPath); 
+        }
+        return $folderPath;  
+    }
+
+    public function getFolderName($id){
+        return intval($id / 500) . '/';
+    }
+
+    public function isImage($file){
+        $path = '/' . $this->getPath($file);
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $type = finfo_file($finfo, $this->f3->get('ROOT') . $path);
+        if(preg_match('/jpeg|jpg|png|gif/', $type)){
+            $file->set('image', true);
+            $file->save();
+            return true;
+        } else {
+            return false;
+        }
+        
     }
 }

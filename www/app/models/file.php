@@ -29,4 +29,8 @@ class File extends DB\SQL\Mapper{
         $this->save();
     }
 
+    public function getThumbnailPath($path){
+        return $path . $this->title;
+    }
+
 }

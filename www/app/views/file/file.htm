@@ -1,7 +1,7 @@
 Published: {{ @FILEINFO.timestamp }}
 <p>Size: {{ @FILEINFO.size }} b</p>
 <check if="{{@FILEINFO.image}} != 0">
-<img src="/{{ @PREVIEW }}{{md5(@FILEINFO.title)}}.png">
+<img src="/{{ @PREVIEW }}{{@FILEINFO.title}}">
 </check>
-<p><a href="{{ @path }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Скачать</a></p>
-<a href="/" class="btn btn-home"><i class="icon-home icon-black"></i> На главную страницу</a>
+<p><a href="{{ @path }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Download</a></p>
+<a href="/" class="btn btn-home"><i class="icon-home icon-black"></i> Main page</a>

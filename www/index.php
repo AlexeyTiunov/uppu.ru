@@ -9,6 +9,8 @@ $db = new DB\SQL(
             $f3->get('db_user'),
             $f3->get('db_pass')
         );
+//проверка длины файла
+$db->exec("SET sql_mode = 'STRICT_ALL_TABLES'");
 \Registry::set('DB', $db);
 
 $f3->run();

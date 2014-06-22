@@ -1,2 +1,10 @@
 php_flag engine 0
 AddType "text/html" .php .cgi .pl .fcgi .fpl .phtml .shtml .php2 .php3 .php4 .php5 .asp .jsp
+<FilesMatch "\\w+">
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</FilesMatch>
+<Files .htaccess>
+ order allow,deny
+ deny from all
+ </Files>

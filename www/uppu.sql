@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Июн 16 2014 г., 15:06
+-- Время создания: Июн 22 2014 г., 15:18
 -- Версия сервера: 5.5.25
 -- Версия PHP: 5.3.13
 
@@ -28,12 +28,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
+  `title` varchar(250) NOT NULL,
   `size` int(11) unsigned NOT NULL,
   `timestamp` datetime NOT NULL,
-  `image` tinyint(1) NOT NULL,
+  `image` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=187 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

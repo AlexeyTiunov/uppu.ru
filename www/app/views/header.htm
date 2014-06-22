@@ -5,18 +5,9 @@
     <base href="{{ @BASE.'/'.@UI }}"></base>
     <title>{{ @site }}</title>
     <link href="/ui/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script>
-        function validate(form){
-            //js проверка выбран ли файл
-        /*  if(form.file.value == ""){
-                alert("Не выбран файл");
-                return false;
-            } */
-        }
-    </script>
 </head>
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1>{{ isset(@FILEINFO.title)?@FILEINFO.title:@page_head }}</h1>
+            <h1>{{ isset(@FILEINFO.title)?substr(strstr(@FILEINFO.title, '_'),1):@page_head }}</h1>
         </div>

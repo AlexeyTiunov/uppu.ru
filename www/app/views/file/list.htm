@@ -1,5 +1,5 @@
-<a href="/" class="btn btn-home"><i class="icon-home icon-black"></i> На главную страницу</a>
-<table width="600" cellpadding="5" class="table table-hover table-bordered">
+<a href="/" class="btn btn-home"><i class="icon-home icon-black"></i> Main page</a>
+<table class="table table-hover table-bordered">
 	<thead>
 		<tr>
 			<th scope="col">Name</td>
@@ -11,10 +11,10 @@
 	<tbody>
 	<repeat group="{{ @list }}" value="{{ @file }}">
 		<tr>
-			<td>{{ @file.title }}</td>
+			<td>{{ substr(strstr(@file.title,'_'),1) }}</td>
 			<td>{{ @file.timestamp }}</td>
 			<td>{{ @file.size }}</td>
-			<td><a href="/{{ @UPLOADS }}{{ @file.title }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Скачать</a></td>
+			<td><a href="/{{ @UPLOADS }}{{ intval(@file.id/500) }}/{{ @file.title }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Download</a></td>
 		</tr>
 	</repeat>
 	</tbody>
