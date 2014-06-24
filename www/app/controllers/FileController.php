@@ -21,6 +21,17 @@ class FileController extends Controller{
         if(!$result){
             $this->f3->error('404');
         }
+        //проверка, является ли файл картинкой
+        if($this->isImage($file)){
+            $this->f3->set('isImage', true);  
+            if(!file_exists($file->getThumbnailPath($this->f3->get("PREVIEW")))){
+                $this->makePreviewImage($file);
+            }
+        } else {
+            $this->f3->set('isImage', false);
+        }
+        //$this->f3->set('fileTitle', $file->getFileTitle());
+        $this->f3->set('fileinfo', $result);
         $this->f3->set('path', $path);
         $this->f3->set('view', 'file/file.htm');
     }
@@ -39,20 +50,15 @@ class FileController extends Controller{
             $file->add($this->f3->get("FILES['file']"));
             $name = $this->rename($file);
             $this->f3->set("FILES['file']['name']", $name);
-            //раскидываем файлы по папкам
+            //Выбрать или создать папку для сохранения файла
             $this->f3->set('UPLOADS', $this->chooseFolder($file));
-            //без функций, не перезаписывать, не менять на латиницу 
+            //Сохранить файл, без функций, не перезаписывать, не менять на латиницу 
             \Web::instance()->receive(null, false, false);
-            //проверка на картинку
-            if($this->isImage($file)){  
-                if(!file_exists($file->getThumbnailPath($this->f3->get("PREVIEW")))){
-                    $this->makePreviewImage($file);
-                }
-            }
             $this->f3->reroute('/file/'.$file['id']);
         } 
     }
 
+    //создать превью изображение
     public function makePreviewImage($result){
         $img = new Image($this->getPath($result));
         $width = $img->width();
@@ -68,6 +74,7 @@ class FileController extends Controller{
         $this->f3->write($preview_path, $img->dump('png'));
     }
 
+    //переименовать загружаемый файл для уникальности 
     public function rename($file){
         $name = $file->id .'_'. $file->title;
         $file->title = $name;
@@ -75,13 +82,15 @@ class FileController extends Controller{
         return $name;
     }
 
+    //получить путь до загруженного файла
     public function getPath($file){
-        $folderName = $this->getFolderName($file->id);
-        return ($this->f3->get('UPLOAD') . $folderName . ($file->title));
+        $folderName = $file->getFolderName();
+        return ($this->f3->get('UPLOADS') . $folderName . ($file->title));
     }
 
+    //выбрать или создать папку для загружаемого файла
     public function chooseFolder($file){
-        $folderName = $this->getFolderName($file->id);
+        $folderName = $file->getFolderName();
         $folderPath = $this->f3->get('UPLOADS') . $folderName;
         if(!file_exists($folderPath)){
            mkdir($folderPath); 
@@ -89,17 +98,12 @@ class FileController extends Controller{
         return $folderPath;  
     }
 
-    public function getFolderName($id){
-        return intval($id / 500) . '/';
-    }
-
+    //является ли загружаемый файл картинкой
     public function isImage($file){
         $path = '/' . $this->getPath($file);
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $type = finfo_file($finfo, $this->f3->get('ROOT') . $path);
-        if(preg_match('/jpeg|jpg|png|gif/', $type)){
-            $file->set('image', true);
-            $file->save();
+        if(preg_match('/image\/(jpeg|png|gif)/', $type)){
             return true;
         } else {
             return false;

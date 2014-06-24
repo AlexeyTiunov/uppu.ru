@@ -11,10 +11,10 @@
 	<tbody>
 	<repeat group="{{ @list }}" value="{{ @file }}">
 		<tr>
-			<td>{{ substr(strstr(@file.title,'_'),1) }}</td>
+			<td>{{ @file.title }}</td>
 			<td>{{ @file.timestamp }}</td>
 			<td>{{ @file.size }}</td>
-			<td><a href="/{{ @UPLOADS }}{{ intval(@file.id/500) }}/{{ @file.title }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Download</a></td>
+			<td><a href="/{{ @UPLOADS }}{{ @file.path }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Download</a></td>
 		</tr>
 	</repeat>
 	</tbody>

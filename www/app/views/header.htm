@@ -9,5 +9,5 @@
 <body>
     <div class="container">
         <div class="jumbotron">
-            <h1>{{ isset(@FILEINFO.title)?substr(strstr(@FILEINFO.title, '_'),1):@page_head }}</h1>
+            <h1>{{ isset(@fileinfo.realTitle)?@fileinfo.realTitle:@page_head }}</h1>
         </div>
