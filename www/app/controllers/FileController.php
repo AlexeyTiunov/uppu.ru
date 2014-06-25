@@ -30,7 +30,7 @@ class FileController extends Controller{
         } else {
             $this->f3->set('isImage', false);
         }
-        //$this->f3->set('fileTitle', $file->getFileTitle());
+        $this->f3->set('fileTitle', $file->getFileTitle());
         $this->f3->set('fileinfo', $result);
         $this->f3->set('path', $path);
         $this->f3->set('view', 'file/file.htm');
@@ -84,8 +84,8 @@ class FileController extends Controller{
 
     //получить путь до загруженного файла
     public function getPath($file){
-        $folderName = $file->getFolderName();
-        return ($this->f3->get('UPLOADS') . $folderName . ($file->title));
+        $folderName = $file->getFilePath();
+        return ($this->f3->get('UPLOADS') . $folderName);
     }
 
     //выбрать или создать папку для загружаемого файла

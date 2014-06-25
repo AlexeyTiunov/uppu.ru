@@ -9,12 +9,7 @@ class File extends DB\SQL\Mapper{
     public function getList(){
         $limit = array( 'order' => 'id DESC',
                         'limit' => '100');
-        $s =  $this->find(null, $limit);
-        foreach ($s as $key) {
-            $key->title = $this->getFileTitle($key->title);
-            $key->path = $this->getFilePath($key->id, $key->title);
-        }
-        return $s;
+        return  $this->find(null, $limit);
     }
 
     public function getById($id){
@@ -41,12 +36,11 @@ class File extends DB\SQL\Mapper{
         return intval($this->id / 500) . '/';
     }
 
-    public function getFileTitle($title){
-        return substr(strstr($title, '_'),1);
+    public function getFileTitle(){
+        return substr(strstr($this->title, '_'),1);
     }
 
-    public function getFilePath($id, $title){
-        return intval($id/500).'/'. $title;
+    public function getFilePath(){
+        return intval($this->id/500).'/'. $this->title;
     }
-
 }
