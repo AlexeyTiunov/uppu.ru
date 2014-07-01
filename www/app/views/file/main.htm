@@ -1,7 +1,3 @@
-{{ isset(@err)? @err :'' }}
-<form enctype="multipart/form-data" method="post" action="{{ @PARAMS.0 }}" onSubmit="return validate(this)" id="inputForm">
-	<input type="hidden" name="MAX_FILE_SIZE" value="{{5*1024*1024}}">
-	<p><input type="file" name="file" class="btn btn-choose"></p>
-	<input type="submit" value="Submit" class="btn btn-submit">
-</form>	
-<p><a href="/fileslist" class="btn btn-list"><i class="icon-th-list icon-black"></i> Last uploaded files</a></p>
+<div id="in_the_middle_of_page">
+	<include href="file/_form.htm" /> 
+</div>

@@ -30,7 +30,6 @@ class FileController extends Controller{
         } else {
             $this->f3->set('isImage', false);
         }
-        $this->f3->set('fileTitle', $file->getFileTitle());
         $this->f3->set('fileinfo', $result);
         $this->f3->set('path', $path);
         $this->f3->set('view', 'file/file.htm');

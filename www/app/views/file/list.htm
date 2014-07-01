@@ -1,21 +1,12 @@
-<a href="/" class="btn btn-home"><i class="icon-home icon-black"></i> Main page</a>
-<table class="table table-hover table-bordered">
-	<thead>
-		<tr>
-			<th scope="col">Name</td>
-			<th scope="col">Date</td>
-			<th scope="col">Size</td>
-			<th scope="col">Download</td>
-		</tr>
-	</thead>	
-	<tbody>
-	<repeat group="{{ @list }}" value="{{ @file }}">
-		<tr>
-			<td>{{ @file->getFileTitle() }}</td>
-			<td>{{ @file.timestamp }}</td>
-			<td>{{ @file.size }}</td>
-			<td><a href="/{{ @UPLOADS }}{{ @file->getFilePath() }}" class="btn btn-download" download><i class="icon-download icon-black"></i> Download</a></td>
-		</tr>
-	</repeat>
-	</tbody>
-</table>
+<div id="upload-form-wrap">
+	<include href="file/_form.htm" /> 
+</div>
+<div id="column-header">Последний файлы</div>
+<div id="column">
+	<ul>
+		<repeat group="{{ @list }}" value="{{ @file }}">
+			<li><a href="/{{ @UPLOADS }}{{ @file->getFilePath() }}">{{ @file->getFileTitle() }}</a>
+			<span>{{ @file.size }}</span>		
+		</repeat>
+	</ul>
+</div>
