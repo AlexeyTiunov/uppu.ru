@@ -21,14 +21,11 @@ class FileController extends Controller{
         if(!$result){
             $this->f3->error('404');
         }
-        //проверка, является ли файл картинкой
-        if($this->isImage($file)){
-            $this->f3->set('isImage', true);  
+        //если картинка проверить/сделать превью
+        if($result->image != 0){
             if(!file_exists($file->getThumbnailPath($this->f3->get("PREVIEW")))){
                 $this->makePreviewImage($file);
             }
-        } else {
-            $this->f3->set('isImage', false);
         }
         $this->f3->set('fileinfo', $result);
         $this->f3->set('path', $path);
@@ -47,6 +44,10 @@ class FileController extends Controller{
         } else {
             //переименовываем файл до копирования в папку
             $file->add($this->f3->get("FILES['file']"));
+            //проверка на картинку
+            if($this->isImage()){
+                $file->image = true;
+            }
             $name = $this->rename($file);
             $this->f3->set("FILES['file']['name']", $name);
             //Выбрать или создать папку для сохранения файла
@@ -98,10 +99,9 @@ class FileController extends Controller{
     }
 
     //является ли загружаемый файл картинкой
-    public function isImage($file){
-        $path = '/' . $this->getPath($file);
+    public function isImage(){
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $type = finfo_file($finfo, $this->f3->get('ROOT') . $path);
+        $type = finfo_file($finfo, $this->f3->get("FILES[file][tmp_name]"));
         if(preg_match('/image\/(jpeg|png|gif)/', $type)){
             return true;
         } else {
