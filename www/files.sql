@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Июн 25 2014 г., 19:56
+-- Время создания: Июл 02 2014 г., 17:51
 -- Версия сервера: 5.5.25
 -- Версия PHP: 5.3.13
 
@@ -31,8 +31,9 @@ CREATE TABLE IF NOT EXISTS `files` (
   `title` varchar(250) NOT NULL,
   `size` int(11) unsigned NOT NULL,
   `timestamp` datetime NOT NULL,
+  `image` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=232 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
