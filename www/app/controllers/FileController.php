@@ -2,14 +2,13 @@
 
 class FileController extends Controller{
     public function index(){
-        $this->f3->set('page_head', 'Upload File');
         $this->f3->set('view', 'file/main.htm');
     }
 
     public function showList(){
         $file = new File($this->db);
+        $this->f3->set('count', $file->count());
         $this->f3->set('list', $file->getList());
-        $this->f3->set('page_head', '100 last files');
         $this->f3->set('view', 'file/list.htm');
     }
 
@@ -39,8 +38,12 @@ class FileController extends Controller{
             $err =  new UploadError($this->f3->get("FILES['file']['error']")); 
             $errMessage = $err->getMessage();
             $this->f3->set('err', $errMessage);
-            $this->f3->set('page_head', 'Upload File');
-            $this->f3->set('view', 'file/main.htm');
+            if($this->f3->get('PATH') != "/"){
+                $this->showList();
+            } else {
+                $this->index();
+            }
+            
         } else {
             //переименовываем файл до копирования в папку
             $file->add($this->f3->get("FILES['file']"));

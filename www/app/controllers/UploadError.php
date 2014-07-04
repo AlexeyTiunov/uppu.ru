@@ -12,13 +12,13 @@ class UploadError{
         switch ($code) { 
             case UPLOAD_ERR_INI_SIZE: 
             case UPLOAD_ERR_FORM_SIZE: 
-                $message = "Error: File is too large."; 
+                $message = "Ошибка: размер файла превышает допустимую величину."; 
                 break;   
             case UPLOAD_ERR_NO_FILE: 
-                $message = "Error: Select a file";
+                $message = "Ошибка: выберите файл.";
                 break;
             default: 
-                $message = "Error: Try again later."; 
+                $message = "Ошибка: попробуйте повторить позже."; 
                 break; 
         } 
         return $message; 

@@ -1,12 +1,15 @@
 <div id="upload-form-wrap">
 	<include href="file/_form.htm" /> 
 </div>
-<div id="column-header">Последний файлы</div>
+<div id="column-header">Последние файлы</div>
 <div id="column">
-	<ul>
+<check if=" {{ @count }} == 0">	
+	Не загружено ни одного файла
+</check>	
+	<ul id="ul">
 		<repeat group="{{ @list }}" value="{{ @file }}">
 			<li><a href="/{{ @UPLOADS }}{{ @file->getFilePath() }}">{{ @file->getFileTitle() }}</a>
-			<span>{{ @file.size }}</span>		
+			<span>{{ @file->getFileSize() }}</span>		
 		</repeat>
 	</ul>
 </div>

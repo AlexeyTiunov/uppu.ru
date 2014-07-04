@@ -43,4 +43,16 @@ class File extends DB\SQL\Mapper{
     public function getFilePath(){
         return intval($this->id/500).'/'. $this->title;
     }
+
+    public function getFileSize(){
+        $size = $this->size;
+        if($size > (1024 * 1024)){
+            $size = round(($size / 1024 / 1024), 1) . " Mb";
+        } else if($size > 1024){
+            $size = round(($size / 1024), 1) . " Kb";
+        } else {
+            $size = $size . " b";
+        }
+        return $size;
+    }
 }

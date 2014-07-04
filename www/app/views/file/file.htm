@@ -1,8 +1,8 @@
 <div id="content">
 	<div id="page-header">
 		<h1>
-		<a href="{{ @path }}">{{ @fileinfo->getFileTitle() }}</a>
-		<small>({{ @fileinfo.size }} b)</small>
+		<a href="{{ @path }}" id="h1-a">{{ @fileinfo->getFileTitle() }}</a>
+		<small>({{ @fileinfo->getFileSize() }})</small>
 		</h1>
 	</div>
 	<div id="thumbnail">

@@ -1,4 +1,5 @@
-#in_the_middle_of_page{
+#in-the-middle-of-page{
+  text-align: center;
   position: absolute;
   top: 50%;
   width: 100%
@@ -38,12 +39,17 @@
   background-color: #cccccc;
 }
 
-h1 a{
+#h1-a{
   color: #333;
 }
 
+#h1-a:hover{
+  color: #005580;
+}
+
 #upload-form-wrap{
-  margin: 20px 0 20px 0; 
+  margin: 20px 0 20px 0;
+  text-align: center; 
 }
 
 #column-header{
@@ -75,7 +81,7 @@ h1 a{
   width: 50%;
 }
 
-ul{
+#ul {
   padding: 15px;
 }
 

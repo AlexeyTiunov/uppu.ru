@@ -1,8 +1,8 @@
-<center>
-	{{ isset(@err)? @err :'' }}
-		<form enctype="multipart/form-data" method="post" action="{{ @PARAMS.0 }}">
-			<input type="hidden" name="MAX_FILE_SIZE" value="{{ @MAXSIZE }}">
-			<input type="file" name="file">
-			<input type="submit" value="Отправить" class="btn btn-submit">
-		</form>	
-</center>
+<check if="{{ isset(@err) }}">
+	<div class="alert alert-error">{{ @err }}</div>
+</check>
+<form enctype="multipart/form-data" method="post" action="{{ @PARAMS.0 }}">
+	<input type="hidden" name="MAX_FILE_SIZE" value="{{ @MAXSIZE }}">
+	<input type="file" name="file">
+	<input type="submit" value="Отправить" class="btn btn-submit">
+</form>	
